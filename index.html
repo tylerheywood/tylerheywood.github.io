@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tyler Heywood — Systems Builder</title>
+  <meta name="description" content="I build production systems that eliminate manual work. Finance, operations, and software — combined to create leverage.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-alt: #0f0f16;
+      --bg-card: #12121a;
+      --border: #1e1e2e;
+      --border-hover: #2a2a3e;
+      --text: #e4e4ef;
+      --text-secondary: #8888a0;
+      --text-tertiary: #5e5e72;
+      --accent: #6c8cff;
+      --blue: #6c8cff;
+      --blue-light: rgba(108, 140, 255, 0.08);
+      --green: #4ade80;
+      --green-light: rgba(74, 222, 128, 0.08);
+      --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      --max-w: 720px;
+      --max-w-wide: 960px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection { background: var(--accent); color: #0a0a0f; }
+
+    a { color: var(--text); text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max-w-wide); margin: 0 auto;
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-name {
+      font-weight: 600; font-size: 0.9rem; letter-spacing: -0.3px;
+    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-tertiary); font-size: 0.82rem; font-weight: 450;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 4px; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 18px; height: 1.5px; background: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    /* ── LAYOUT ── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: var(--max-w); margin: 0 auto; }
+    .container-wide { max-width: var(--max-w-wide); margin: 0 auto; }
+
+    .label {
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1.8px; color: var(--text-tertiary);
+      margin-bottom: 1rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; overflow: hidden;
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: 56px;
+    }
+    #pipeline-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+      font-weight: 800; line-height: 1.12;
+      letter-spacing: -2px; margin-bottom: 1.5rem;
+      max-width: 640px;
+    }
+    .hero-sub {
+      font-size: 1.15rem; line-height: 1.75;
+      color: var(--text-secondary); max-width: 540px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-signal {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--green);
+      margin-bottom: 2rem;
+    }
+    .hero-signal::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+    .hero-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.25rem; border-radius: 6px;
+      font-size: 0.82rem; font-weight: 500; transition: all 0.15s;
+    }
+    .btn-dark {
+      background: var(--accent); color: #0a0a0f; border: 1px solid var(--accent);
+    }
+    .btn-dark:hover { background: #93b0ff; border-color: #93b0ff; }
+    .btn-ghost {
+      background: transparent; color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+    .btn-arrow { font-size: 1rem; transition: transform 0.15s; }
+    .btn:hover .btn-arrow { transform: translateX(2px); }
+
+    /* ── HERO LAYOUT ── */
+    .hero-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+
+    /* ── TERMINAL ── */
+    .terminal {
+      background: #0c0c14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(108,140,255,0.06);
+    }
+    .terminal-header {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot.r { background: #f87171; }
+    .terminal-dot.y { background: #fbbf24; }
+    .terminal-dot.g { background: #4ade80; }
+    .terminal-title {
+      flex: 1; text-align: center; color: var(--text-tertiary);
+      font-size: 0.68rem;
+    }
+    .terminal-body {
+      padding: 1.25rem;
+      min-height: 200px;
+      line-height: 1.9;
+    }
+    .terminal-line { color: var(--text-secondary); white-space: nowrap; }
+    .terminal-line .prompt { color: var(--green); }
+    .terminal-line .val { color: var(--accent); }
+    .terminal-line .warn { color: #fbbf24; }
+    .terminal-line .ok { color: var(--green); }
+    .terminal-cursor {
+      display: inline-block; width: 8px; height: 15px;
+      background: var(--accent); vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-layout { grid-template-columns: 1fr; }
+      .terminal { margin-top: 2rem; }
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .divider {
+      max-width: var(--max-w-wide); margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .divider hr {
+      border: none;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CASE STUDIES ── */
+    .case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .case-card:hover { border-color: var(--border-hover); }
+    .case-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-tertiary);
+      margin-bottom: 1rem;
+    }
+    .case-badge .dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+    }
+    .case-card h3 {
+      font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px;
+      margin-bottom: 0.3rem;
+    }
+    .case-tagline {
+      font-size: 0.92rem; color: var(--text-secondary);
+      margin-bottom: 1.75rem; line-height: 1.6;
+    }
+    .case-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin-bottom: 1.75rem;
+    }
+    .case-block h4 {
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-tertiary);
+      margin-bottom: 0.5rem;
+    }
+    .case-block p {
+      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65;
+    }
+    .case-tech {
+      display: flex; flex-wrap: wrap; gap: 0.35rem;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+    }
+    .case-tech span {
+      font-size: 0.7rem; font-weight: 500;
+      padding: 0.25rem 0.6rem; border-radius: 4px;
+      background: rgba(108, 140, 255, 0.08); color: var(--accent);
+    }
+
+    /* ── LEVERAGE ── */
+    .leverage-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .leverage-card {
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-card);
+      transition: border-color 0.2s;
+    }
+    .leverage-card:hover { border-color: var(--border-hover); }
+    .leverage-card h3 {
+      font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem;
+      letter-spacing: -0.2px;
+    }
+    .leverage-card p {
+      font-size: 0.85rem; color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ── EVIDENCE ── */
+    .evidence { }
+    .evidence-list { list-style: none; }
+    .evidence-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .evidence-item:last-child { border-bottom: none; }
+    .evidence-marker {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+    .evidence-item p {
+      font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65;
+    }
+    .evidence-item strong { color: var(--text); font-weight: 600; }
+
+    /* ── BACKGROUND ── */
+    .timeline-compact { list-style: none; }
+    .timeline-entry {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 1.5rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-entry:last-child { border-bottom: none; }
+    .timeline-dates {
+      font-size: 0.78rem; color: var(--text-tertiary);
+      font-weight: 500; padding-top: 0.1rem;
+      white-space: nowrap;
+    }
+    .timeline-role-title {
+      font-size: 0.9rem; font-weight: 600; margin-bottom: 0.1rem;
+    }
+    .timeline-org {
+      font-size: 0.82rem; color: var(--text-secondary);
+    }
+
+    /* ── CONTACT ── */
+    .contact { }
+    .contact h2 {
+      font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px;
+      margin-bottom: 0.75rem;
+    }
+    .contact > .container > p {
+      font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;
+      max-width: 480px; margin-bottom: 2rem;
+    }
+    .contact-links {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .contact-link {
+      font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.15s;
+    }
+    .contact-link:hover { color: var(--text); }
+    .contact-link svg {
+      width: 16px; height: 16px; flex-shrink: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem; text-align: center;
+      font-size: 0.75rem; color: var(--text-tertiary);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      section { padding: 3.5rem 1.25rem; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 56px; left: 0; right: 0;
+        background: rgba(10,10,15,0.97); backdrop-filter: blur(12px);
+        padding: 1.25rem 2rem; gap: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .hamburger { display: flex; }
+      .hero h1 { font-size: 2rem; letter-spacing: -1px; }
+      .case-grid { grid-template-columns: 1fr; }
+      .case-card { padding: 1.75rem; }
+      .leverage-grid { grid-template-columns: 1fr; }
+      .timeline-entry { grid-template-columns: 1fr; gap: 0.25rem; }
+    }
+
+    /* ── SCROLL PROGRESS BAR ── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--accent); z-index: 200;
+      width: 0%; transition: none;
+    }
+
+    /* ── NAV ACTIVE STATE ── */
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    /* ── CURSOR SPOTLIGHT ── */
+    .spotlight-card {
+      position: relative; overflow: hidden;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(108, 140, 255, 0.06), transparent 40%);
+      pointer-events: none; z-index: 1;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .spotlight-card:hover::before { opacity: 1; }
+    .spotlight-card > * { position: relative; z-index: 2; }
+
+
+    /* ── METRICS ── */
+    .metrics {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .metrics-grid {
+      max-width: var(--max-w-wide); margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; text-align: center;
+    }
+    .metric-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--accent); line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .metric-number .suffix { font-size: 1.3rem; }
+    .metric-label {
+      font-size: 0.78rem; color: var(--text-secondary); font-weight: 500;
+    }
+
+    /* ── ARCHITECTURE DIAGRAMS ── */
+    .arch-flow {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; padding: 1.25rem;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+    .arch-node {
+      padding: 0.45rem 0.9rem;
+      background: rgba(108, 140, 255, 0.05);
+      border: 1px solid rgba(108, 140, 255, 0.12);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 0.4s ease, transform 0.4s ease,
+                  border-color 0.4s ease, color 0.4s ease, background 0.4s ease;
+    }
+    .arch-node.lit {
+      opacity: 1; transform: translateY(0);
+      border-color: rgba(108, 140, 255, 0.35);
+      color: var(--text);
+      background: rgba(108, 140, 255, 0.08);
+    }
+    .arch-arrow {
+      padding: 0 0.4rem;
+      color: var(--text-tertiary);
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .arch-arrow.lit { opacity: 0.6; }
+
+    /* ── ANIMATIONS ── */
+    .reveal {
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Staggered children */
+    .stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+    .stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
+    .stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
+    .stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
+    .stagger > .reveal:nth-child(5) { transition-delay: 320ms; }
+    .stagger > .reveal:nth-child(6) { transition-delay: 400ms; }
+
+    @media (max-width: 768px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .arch-flow { justify-content: flex-start; }
+      .spotlight-card::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<canvas id="pipeline-canvas"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Tyler Heywood</span>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#systems">Systems</a></li>
+      <li><a href="#leverage">Leverage</a></li>
+      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container" style="max-width: var(--max-w-wide);">
+    <div class="hero-layout">
+      <div>
+        <div class="hero-signal">Currently building</div>
+        <h1>I build the systems that&nbsp;make operations&nbsp;scale.</h1>
+        <p class="hero-sub">
+          Finance professional turned systems builder. I combine domain expertise in accounts payable, controls, and operations with software to ship production tools that eliminate manual work and create organisational leverage.
+        </p>
+        <div class="hero-links">
+          <a href="mailto:tyler.heywood@gmail.com" class="btn btn-dark">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+            Get in touch <span class="btn-arrow">&rarr;</span>
+          </a>
+          <a href="https://github.com/tylerheywood" target="_blank" rel="noopener" class="btn btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/tyler-heywood" target="_blank" rel="noopener" class="btn btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span class="terminal-title">ap-automation.py</span>
+          <div style="width: 30px;"></div>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+          <div class="terminal-line"><span class="terminal-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics">
+  <div class="metrics-grid">
+    <div class="metric-item reveal">
+      <div class="metric-number"><span class="counter" data-target="3">0</span></div>
+      <div class="metric-label">Production Systems</div>
+    </div>
+    <div class="metric-item reveal">
+      <div class="metric-number"><span class="counter" data-target="2">0</span></div>
+      <div class="metric-label">Live Deployments</div>
+    </div>
+    <div class="metric-item reveal">
+      <div class="metric-number"><span class="counter" data-target="10">0</span><span class="suffix">+</span></div>
+      <div class="metric-label">Years in Finance</div>
+    </div>
+    <div class="metric-item reveal">
+      <div class="metric-number"><span class="counter" data-target="4">0</span></div>
+      <div class="metric-label">ACCA Exams Passed</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- FLAGSHIP SYSTEMS -->
+<section id="systems">
+  <div class="container-wide">
+    <p class="label reveal">Flagship Systems</p>
+
+    <!-- VendAhead -->
+    <div class="case-card spotlight-card reveal">
+      <div class="case-badge"><span class="dot"></span> Live System</div>
+      <h3>VendAhead</h3>
+      <p class="case-tagline">Production SaaS platform for street food vendors. Capacity-aware pre-ordering that transforms reactive service into planned production.</p>
+      <div class="arch-flow" data-arch>
+        <div class="arch-node">Customer</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Browse Menu</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Select Slot</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Pay (Stripe)</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Vendor Dashboard</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-block">
+          <h4>Problem</h4>
+          <p>Street food vendors deal with chaotic demand, long queues, unpredictable prep cycles, and lost sales. Customers walk away. Vendors can't plan. Revenue leaks at both ends.</p>
+        </div>
+        <div class="case-block">
+          <h4>Approach</h4>
+          <p>Built a web platform that allows customers to pre-order into time slots, giving vendors predictable demand and operational control. Multi-tenant architecture with vendor-specific storefronts and Stripe Connect for payment processing.</p>
+        </div>
+        <div class="case-block">
+          <h4>Outcome</h4>
+          <p>Transforms reactive service into planned production. Reduces queue pressure, improves throughput, and gives vendors data they've never had access to before.</p>
+        </div>
+        <div class="case-block">
+          <h4>Key Capabilities</h4>
+          <p>Capacity-controlled ordering. Time-slot scheduling. Vendor-specific storefronts. Stripe Connect payment processing. Multi-tenant architecture. Live deployable system.</p>
+        </div>
+      </div>
+      <div class="case-tech">
+        <span>Python</span>
+        <span>Flask</span>
+        <span>Jinja2</span>
+        <span>PostgreSQL</span>
+        <span>HTML/CSS/JS</span>
+        <span>Stripe Connect</span>
+        <span>Multi-tenant</span>
+        <span>Production</span>
+      </div>
+    </div>
+
+    <!-- AP Inbox Control System -->
+    <div class="case-card spotlight-card reveal">
+      <div class="case-badge"><span class="dot"></span> Production System</div>
+      <h3>AP Inbox Control System</h3>
+      <p class="case-tagline">Automated invoice ingestion, PO matching, and exception surfacing. Replaces manual inbox triage with deterministic control logic.</p>
+      <div class="arch-flow" data-arch>
+        <div class="arch-node">Email Inbox</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">PDF Parse</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">PO Match</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">SQLite</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Dashboard</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-block">
+          <h4>Problem</h4>
+          <p>AP teams manually sort through inboxes, cross-reference PO numbers, flag duplicates by eye, and track exceptions in spreadsheets. Slow, error-prone, and unauditable.</p>
+        </div>
+        <div class="case-block">
+          <h4>Approach</h4>
+          <p>Built a Python system that ingests invoice emails, extracts financial data from PDFs, validates against PO references, and surfaces exceptions through a purpose-built dashboard.</p>
+        </div>
+        <div class="case-block">
+          <h4>Outcome</h4>
+          <p>Eliminated manual inbox sorting. PO validation and duplicate detection run automatically. Full audit trail for every decision. Deployed on Linux with Nginx and HTTPS.</p>
+        </div>
+        <div class="case-block">
+          <h4>Key Capabilities</h4>
+          <p>Email ingestion. PDF data extraction. Deterministic PO matching. Duplicate detection. Exception dashboard. Traceable audit trail.</p>
+        </div>
+      </div>
+      <div class="case-tech">
+        <span>Python</span>
+        <span>SQLite</span>
+        <span>pdfplumber</span>
+        <span>HTML/JSON</span>
+        <span>Linux</span>
+        <span>Nginx</span>
+        <span>HTTPS</span>
+      </div>
+    </div>
+
+    <!-- AP Risk Report -->
+    <div class="case-card spotlight-card reveal">
+      <div class="case-badge">Reporting Tool</div>
+      <h3>AP Duplication & Exception Risk Report</h3>
+      <p class="case-tagline">Data-driven risk reporting that consolidates duplicate exposure, blocked invoices, and processing exceptions into a single repeatable output.</p>
+      <div class="arch-flow" data-arch>
+        <div class="arch-node">Invoice Data</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Supplier Match</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Duplicate Scan</div>
+        <div class="arch-arrow">&rarr;</div>
+        <div class="arch-node">Exception Report</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-block">
+          <h4>Problem</h4>
+          <p>AP teams rely on ad-hoc spreadsheet checks to identify duplicate invoices and processing exceptions. Risk signals are scattered, inconsistent, and easy to miss.</p>
+        </div>
+        <div class="case-block">
+          <h4>Approach</h4>
+          <p>Implemented deterministic matching logic across invoice, supplier, and PO data. Clear exception categorisation with ageing visibility designed for management review.</p>
+        </div>
+        <div class="case-block">
+          <h4>Outcome</h4>
+          <p>Replaced manual spreadsheet checks with a repeatable reporting pipeline. Surfaces high-risk scenarios consistently. Supports audit readiness and AP management review.</p>
+        </div>
+        <div class="case-block">
+          <h4>Key Capabilities</h4>
+          <p>Cross-dataset matching. Duplicate risk scoring. Exception categorisation. Ageing analysis. Audit-ready output.</p>
+        </div>
+      </div>
+      <div class="case-tech">
+        <span>Python</span>
+        <span>Pandas</span>
+        <span>NumPy</span>
+        <span>openpyxl</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- HOW I CREATE LEVERAGE -->
+<section id="leverage">
+  <div class="container-wide">
+    <p class="label reveal">How I Create Leverage</p>
+    <div class="leverage-grid stagger">
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Automation</h3>
+        <p>I identify repetitive operational work and replace it with deterministic systems. Email processing, invoice validation, data extraction — if a human is doing it manually and repeatedly, I build the thing that does it automatically.</p>
+      </div>
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Risk & Controls</h3>
+        <p>I surface financial risk that's currently invisible. Duplicate invoices, missing PO references, processing exceptions — I build systems that catch these consistently, not when someone happens to notice.</p>
+      </div>
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Data Systems</h3>
+        <p>I take scattered data in spreadsheets, inboxes, and disconnected tools and consolidate it into structured, queryable systems. Clean data in, reliable decisions out.</p>
+      </div>
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Process Redesign</h3>
+        <p>I map existing workflows, find where effort is wasted or risk is hidden, and redesign the process before automating it. The system should reflect how work should flow, not how it accidentally evolved.</p>
+      </div>
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Rapid Prototyping</h3>
+        <p>I move from problem to working system quickly. Python, SQL, web interfaces — I choose the shortest path to a deployable solution and iterate from real usage, not specifications.</p>
+      </div>
+
+      <div class="leverage-card spotlight-card reveal">
+        <h3>Product Thinking</h3>
+        <p>I build tools that people actually use. Vendor storefronts, control dashboards, risk reports — designed for the end user, not the developer. If adoption fails, the system is worthless.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- EVIDENCE OF EXECUTION -->
+<section id="evidence">
+  <div class="container">
+    <p class="label reveal">Evidence of Execution</p>
+    <ul class="evidence-list reveal">
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Production SaaS deployment.</strong> VendAhead is a live, multi-tenant platform with payment processing, vendor storefronts, and capacity-controlled ordering — not a prototype.</p>
+      </li>
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Self-hosted infrastructure.</strong> AP Inbox Control System deployed on Linux with Nginx, HTTPS, and authentication. Built the system and the deployment pipeline.</p>
+      </li>
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Stakeholder-facing delivery.</strong> Trained AP staff and non-finance stakeholders on processes and controls at Rugby Borough Council. Built tools that were adopted, not just demonstrated.</p>
+      </li>
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Operational risk reduction.</strong> Reduced manual risk exposure through process mapping, workflow standardisation, and automated duplicate detection across AP operations.</p>
+      </li>
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Cross-domain execution.</strong> Delivered across AP, management accounting, client management, and finance analysis — then taught myself to build the software those teams needed.</p>
+      </li>
+      <li class="evidence-item">
+        <div class="evidence-marker"></div>
+        <p><strong>Ongoing builds.</strong> Currently shipping new systems. Active GitHub. Writing code and deploying production tools alongside a full-time finance role.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- PROFESSIONAL BACKGROUND -->
+<section id="background">
+  <div class="container">
+    <p class="label reveal">Background</p>
+    <ul class="timeline-compact reveal">
+      <li class="timeline-entry">
+        <span class="timeline-dates">2025 &mdash; Present</span>
+        <div>
+          <p class="timeline-role-title">Accounts Payable</p>
+          <p class="timeline-org">QA Higher Education</p>
+        </div>
+      </li>
+      <li class="timeline-entry">
+        <span class="timeline-dates">2024 &mdash; 2025</span>
+        <div>
+          <p class="timeline-role-title">Senior Payments Officer</p>
+          <p class="timeline-org">Rugby Borough Council</p>
+        </div>
+      </li>
+      <li class="timeline-entry">
+        <span class="timeline-dates">2022 &mdash; 2024</span>
+        <div>
+          <p class="timeline-role-title">Assistant Management Accountant</p>
+          <p class="timeline-org">Activate Group</p>
+        </div>
+      </li>
+      <li class="timeline-entry">
+        <span class="timeline-dates">2020 &mdash; 2022</span>
+        <div>
+          <p class="timeline-role-title">Account Manager</p>
+          <p class="timeline-org">Social Chameleon, London</p>
+        </div>
+      </li>
+      <li class="timeline-entry">
+        <span class="timeline-dates">2019</span>
+        <div>
+          <p class="timeline-role-title">Finance Analyst</p>
+          <p class="timeline-org">Kwalee Ltd</p>
+        </div>
+      </li>
+    </ul>
+    <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-tertiary);">
+      ACCA part-qualified (4 exams). Diploma in Accounting & Business.
+    </p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <h2 class="reveal">Let's talk.</h2>
+    <p class="reveal">
+      I'm interested in roles where I can build systems, not just operate them. Product-minded teams, early-stage companies, or any organisation that values people who ship.
+    </p>
+    <div class="contact-links reveal">
+      <a href="mailto:tyler.heywood@gmail.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+        tyler.heywood@gmail.com
+      </a>
+      <a href="https://github.com/tylerheywood" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.39.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.02 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/tyler-heywood" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.37V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Tyler Heywood</p>
+</footer>
+
+<script>
+  // Mobile nav
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => navLinks.classList.remove('open'))
+  );
+
+  // ── Scroll progress bar ──
+  const progressBar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / scrollHeight * 100) + '%';
+  }, { passive: true });
+
+  // ── Nav scroll spy ──
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-links a');
+  const spyObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(a => a.classList.remove('active'));
+        const id = entry.target.id;
+        const match = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+  sections.forEach(s => spyObserver.observe(s));
+
+  // ── Cursor spotlight ──
+  document.querySelectorAll('.spotlight-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+    });
+  });
+
+  // ── Counter animation ──
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const timer = setInterval(() => {
+          current++;
+          el.textContent = current;
+          if (current >= target) { clearInterval(timer); }
+        }, 1500 / target);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+  // ── Architecture diagram animation ──
+  const archObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const nodes = entry.target.querySelectorAll('.arch-node, .arch-arrow');
+        nodes.forEach((node, i) => {
+          setTimeout(() => node.classList.add('lit'), i * 180);
+        });
+        archObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-arch]').forEach(el => archObserver.observe(el));
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Terminal typing animation ──
+  (function() {
+    const lines = [
+      { text: '> scanning inbox...', delay: 40 },
+      { text: '  3 new invoices found', delay: 30, cls: 'val' },
+      { text: '', delay: 300 },
+      { text: '> extracting PO references...', delay: 35 },
+      { text: '  match: PO-2024-0847', delay: 25, cls: 'val' },
+      { text: '  amount: \u00a312,400.00', delay: 25, cls: 'val' },
+      { text: '', delay: 300 },
+      { text: '> running duplicate check...', delay: 35 },
+      { text: '  WARNING: INV-3391 flagged', delay: 30, cls: 'warn' },
+      { text: '  risk: potential duplicate', delay: 30, cls: 'warn' },
+      { text: '', delay: 300 },
+      { text: '> validating against controls...', delay: 35 },
+      { text: '  2 invoices passed', delay: 25, cls: 'ok' },
+      { text: '  1 exception raised', delay: 25, cls: 'warn' },
+      { text: '', delay: 300 },
+      { text: '> dashboard updated', delay: 30, cls: 'ok' },
+      { text: '  status: all controls run \u2713', delay: 25, cls: 'ok' },
+    ];
+
+    const body = document.getElementById('terminalBody');
+    let lineIndex = 0;
+
+    function typeLines() {
+      body.innerHTML = '';
+      lineIndex = 0;
+      typeLine();
+    }
+
+    function typeLine() {
+      if (lineIndex >= lines.length) {
+        setTimeout(typeLines, 3000);
+        return;
+      }
+      const line = lines[lineIndex];
+      const div = document.createElement('div');
+      div.className = 'terminal-line';
+      body.appendChild(div);
+
+      if (line.text === '') {
+        lineIndex++;
+        setTimeout(typeLine, 200);
+        return;
+      }
+
+      let charIndex = 0;
+      const cursor = document.createElement('span');
+      cursor.className = 'terminal-cursor';
+
+      function typeChar() {
+        if (charIndex < line.text.length) {
+          if (div.contains(cursor)) div.removeChild(cursor);
+          if (charIndex === 0 && line.text.startsWith('>')) {
+            const prompt = document.createElement('span');
+            prompt.className = 'prompt';
+            prompt.textContent = '>';
+            div.appendChild(prompt);
+            charIndex++;
+          } else if (charIndex === 0 && line.cls) {
+            const span = document.createElement('span');
+            span.className = line.cls;
+            span.textContent = line.text[charIndex];
+            div.appendChild(span);
+            charIndex++;
+          } else {
+            const lastChild = div.lastChild;
+            if (lastChild && lastChild !== cursor && lastChild.nodeType === 1 && lastChild.className === (line.cls || '')) {
+              lastChild.textContent += line.text[charIndex];
+            } else if (line.cls) {
+              const span = document.createElement('span');
+              span.className = line.cls;
+              span.textContent = line.text[charIndex];
+              div.appendChild(span);
+            } else {
+              div.appendChild(document.createTextNode(line.text[charIndex]));
+            }
+            charIndex++;
+          }
+          div.appendChild(cursor);
+          body.scrollTop = body.scrollHeight;
+          setTimeout(typeChar, line.delay || 30);
+        } else {
+          if (div.contains(cursor)) div.removeChild(cursor);
+          lineIndex++;
+          setTimeout(typeLine, 150);
+        }
+      }
+      typeChar();
+    }
+
+    setTimeout(typeLines, 800);
+  })();
+
+  // ── Canvas pipeline animation ──
+  (function() {
+    const canvas = document.getElementById('pipeline-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, nodes, particles;
+
+    function resize() {
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+      init();
+    }
+
+    function init() {
+      const count = Math.floor((w * h) / 25000);
+      nodes = [];
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.3) * 0.2,
+          r: Math.random() * 2 + 1,
+        });
+      }
+      for (let i = 0; i < 8; i++) spawnParticle();
+    }
+
+    function spawnParticle() {
+      particles.push({
+        x: -10,
+        y: Math.random() * h,
+        vx: Math.random() * 1.5 + 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        life: 1,
+        size: Math.random() * 3 + 1,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      const maxDist = 120;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDist) {
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(108, 140, 255, ${0.06 * (1 - dist / maxDist)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      for (const n of nodes) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(108, 140, 255, 0.15)';
+        ctx.fill();
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+      }
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(74, 222, 128, ${0.3 * p.life})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(74, 222, 128, ${0.05 * p.life})`;
+        ctx.fill();
+        p.x += p.vx; p.y += p.vy;
+        if (p.x > w + 10) { particles.splice(i, 1); spawnParticle(); }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  })();
+</script>
+
+</body>
+</html>
